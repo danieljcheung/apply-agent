@@ -21,6 +21,8 @@ spec:
         app.kubernetes.io/component: worker
     spec:
       automountServiceAccountToken: false
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001
