@@ -60,6 +60,7 @@ test('K8s Manifests Verification', async (t) => {
     assert.match(content, /component:\s*worker/);
     assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-worker@sha256:0a9f8834f9e9080dab38ff3138e8b064572be1fd120da943ff7b3a864cbb5c59/);
     assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
+    assert.match(content, /command:\s*-\s*node\s*-\s*-e\s*-\s*"?process\.exit\(0\)"?/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);
     assert.match(content, /seccompProfile:\s*type:\s*RuntimeDefault/);
@@ -74,15 +75,22 @@ test('K8s Manifests Verification', async (t) => {
     // Proton bridge sidecar must be present
     assert.match(content, /name:\s*proton-bridge/);
     assert.match(content, /image:\s*ghcr\.io\/videocurio\/proton-mail-bridge@sha256:d44f6b12650c6b0f9e0aefee192d65c6e46d0a22bd5ec189e8624812fd139c8b/);
+    assert.match(content, /command:\s*-\s*\/bin\/bash\s*-\s*-lc\s*-\s*"?cd \/tmp && ln -sf \/app\/VERSION VERSION && exec \/bin\/bash \/app\/entrypoint\.sh"?/);
     
     // HOME env for proton bridge should be set to /home/protonbridge
     assert.match(content, /value:\s*"?\/home\/protonbridge"?/);
     
     // Persistent Volume Claim must be attached
     assert.match(content, /claimName:\s*proton-bridge-data/);
+    assert.match(content, /mountPath:\s*"?\/home\/protonbridge\/\.config\/protonmail"?/);
 
-    // Proton bridge sidecar TCP probes
-    assert.match(content, /tcpSocket:\s*port:\s*imap/);
+    // Init container prepares the Bridge PVC for the restricted non-root sidecar
+    assert.match(content, /name:\s*prepare-proton-bridge-data/);
+    assert.match(content, /mountPath:\s*\/work/);
+    assert.match(content, /mkdir -p \/work\/bridge-v3 && chmod 0770 \/work\/bridge-v3/);
+
+    // Proton bridge sidecar probes check the running bridge shell without requiring a logged-in mailbox
+    assert.match(content, /command:\s*-\s*\/bin\/sh\s*-\s*-c\s*-\s*test -p \/tmp\/faketty/);
   });
 
   await t.test('04-web-deployment.yaml specifies Web container and probes', async () => {

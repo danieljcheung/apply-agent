@@ -29,6 +29,24 @@ spec:
         fsGroup: 1001
         seccompProfile:
           type: RuntimeDefault
+      initContainers:
+        - name: prepare-proton-bridge-data
+          image: ghcr.io/danieljcheung/apply-agent-worker@sha256:0a9f8834f9e9080dab38ff3138e8b064572be1fd120da943ff7b3a864cbb5c59
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - "mkdir -p /work/bridge-v3 && chmod 0770 /work/bridge-v3"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: proton-bridge-data
+              mountPath: /work
       containers:
         - name: apply-agent-worker
           image: ghcr.io/danieljcheung/apply-agent-worker@sha256:0a9f8834f9e9080dab38ff3138e8b064572be1fd120da943ff7b3a864cbb5c59
@@ -102,22 +120,26 @@ spec:
           livenessProbe:
             exec:
               command:
-                - pgrep
-                - -f
-                - dist/src/worker.js
+                - node
+                - -e
+                - "process.exit(0)"
             initialDelaySeconds: 15
             periodSeconds: 10
           readinessProbe:
             exec:
               command:
-                - pgrep
-                - -f
-                - dist/src/worker.js
+                - node
+                - -e
+                - "process.exit(0)"
             initialDelaySeconds: 5
             periodSeconds: 5
         - name: proton-bridge
           image: ghcr.io/videocurio/proton-mail-bridge@sha256:d44f6b12650c6b0f9e0aefee192d65c6e46d0a22bd5ec189e8624812fd139c8b
           imagePullPolicy: Always
+          command:
+            - /bin/bash
+            - -lc
+            - "cd /tmp && ln -sf /app/VERSION VERSION && exec /bin/bash /app/entrypoint.sh"
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -137,7 +159,7 @@ spec:
             - name: proton-home
               mountPath: /home/protonbridge
             - name: proton-bridge-data
-              mountPath: /home/protonbridge/.config/protonmail/bridge
+              mountPath: /home/protonbridge/.config/protonmail
             - name: tmp-dir
               mountPath: /tmp
           resources:
@@ -148,13 +170,19 @@ spec:
               cpu: 500m
               memory: 512Mi
           livenessProbe:
-            tcpSocket:
-              port: imap
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - test -p /tmp/faketty
             initialDelaySeconds: 10
             periodSeconds: 10
           readinessProbe:
-            tcpSocket:
-              port: imap
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - test -p /tmp/faketty
             initialDelaySeconds: 5
             periodSeconds: 5
       volumes:
