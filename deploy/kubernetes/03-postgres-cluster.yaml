@@ -1,0 +1,35 @@
+# CloudNativePG Cluster Manifest for PostgreSQL Database
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: apply-agent-postgres
+  namespace: apply-agent
+  labels:
+    app.kubernetes.io/name: apply-agent
+    app.kubernetes.io/component: database
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.1
+  
+  storage:
+    size: 10Gi
+    storageClass: standard
+    
+  bootstrap:
+    initdb:
+      database: apply_agent_db
+      owner: apply_user
+      secret:
+        name: apply-agent-secret
+
+  postgresql:
+    parameters:
+      max_connections: "100"
+      shared_buffers: "256MB"
+      work_mem: "8MB"
+      maintenance_work_mem: "64MB"
+      effective_cache_size: "768MB"
+      synchronous_commit: "on"
+
+  monitoring:
+    enablePodMonitor: true

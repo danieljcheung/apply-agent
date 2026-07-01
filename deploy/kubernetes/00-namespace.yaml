@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apply-agent
+  labels:
+    app.kubernetes.io/name: apply-agent
+    app.kubernetes.io/part-of: chamber-platform

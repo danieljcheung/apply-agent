@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apply-agent
+  namespace: apply-agent
+  labels:
+    app.kubernetes.io/name: apply-agent
+    app.kubernetes.io/component: web
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - apply-agent
+  rules:
+    - host: apply-agent
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: apply-agent-web
+                port:
+                  name: http

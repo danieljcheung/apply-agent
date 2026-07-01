@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workday Job Application - Review & Confirmation Fixture</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .review-card { border: 1px solid #e1e4e8; border-radius: 6px; padding: 20px; margin-bottom: 20px; }
+    .section-title { font-size: 1.2em; border-bottom: 2px solid #0056b3; padding-bottom: 5px; margin-bottom: 15px; }
+    .confirmation-banner { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <div id="workday-application-container" data-automation-id="workdayApplication">
+    <div class="confirmation-banner" id="confirmation-receipt" data-automation-id="confirmationReceipt">
+      <h1>Application Submitted</h1>
+      <p>Thank you for submitting your application to Workday Tech Inc. Your confirmation reference code is <strong>WD-CONF-2026-99812</strong>.</p>
+    </div>
+
+    <div class="review-card" data-automation-id="reviewSection">
+      <div class="section-title">Review Submitted Details</div>
+      <p><strong>Candidate:</strong> Jane Doe</p>
+      <p><strong>Position:</strong> Senior Software Engineer</p>
+      <p><strong>Email:</strong> jane.doe@example.com</p>
+    </div>
+  </div>
+</body>
+</html>

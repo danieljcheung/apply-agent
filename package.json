@@ -1,0 +1,31 @@
+{
+  "name": "apply-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local TypeScript Workday auto-apply agent with Proton Bridge integration and cluster Postgres deployment manifests.",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json && npm run build --prefix web && node scripts/copy-public.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "validate": "npm run typecheck && npm test",
+    "start": "node dist/server.js",
+    "dev": "npm run build && node dist/server.js",
+    "worker": "node dist/src/worker.js",
+    "container": "docker build --target=web -t ${IMAGE_REGISTRY:-ghcr.io/danieljcheung}/apply-agent-web:${TAG:-0.1.0} . && docker build --target=api -t ${IMAGE_REGISTRY:-ghcr.io/danieljcheung}/apply-agent-api:${TAG:-0.1.0} . && docker build --target=worker -t ${IMAGE_REGISTRY:-ghcr.io/danieljcheung}/apply-agent-worker:${TAG:-0.1.0} .",
+    "clean": "rm -rf dist .apply-agent-data web/out web/.next"
+  },
+  "dependencies": {
+    "imapflow": "^1.4.3",
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.12.0",
+    "playwright": "^1.61.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.6",
+    "typescript": "^5.5.4"
+  }
+}

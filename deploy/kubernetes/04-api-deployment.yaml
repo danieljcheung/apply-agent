@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apply-agent-api
+  namespace: apply-agent
+  labels:
+    app.kubernetes.io/name: apply-agent
+    app.kubernetes.io/component: api
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: apply-agent
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: apply-agent
+        app.kubernetes.io/component: api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: apply-agent-api
+          image: ghcr.io/danieljcheung/apply-agent-api:0.1.0
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - containerPort: 3000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: apply-agent-config
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: DB_PASSWORD
+            - name: VAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: VAULT_PASSWORD
+            - name: API_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: API_SECRET_KEY
+            - name: APPLY_AGENT_DATA_DIR
+              value: "/app/data"
+            - name: DB_SSL_CA_PATH
+              value: "/etc/db-ca/ca.crt"
+          volumeMounts:
+            - name: data-volume
+              mountPath: /app/data
+            - name: db-ca
+              mountPath: /etc/db-ca
+              readOnly: true
+            - name: tmp-dir
+              mountPath: /tmp
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+              httpHeaders:
+                - name: Host
+                  value: "apply-agent-api.apply-agent.svc.cluster.local"
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/ready
+              port: http
+              httpHeaders:
+                - name: Host
+                  value: "apply-agent-api.apply-agent.svc.cluster.local"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: apply-agent-data
+        - name: db-ca
+          secret:
+            secretName: apply-agent-postgres-ca
+        - name: tmp-dir
+          emptyDir: {}

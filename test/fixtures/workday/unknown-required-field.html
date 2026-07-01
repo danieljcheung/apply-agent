@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workday Job Application - Unknown Required Field Fixture</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input[type="text"], input[type="email"], select { width: 100%; max-width: 400px; padding: 8px; }
+    .required { color: red; }
+    .custom-question-box { background: #f0f4f8; border: 1px solid #d0d7de; padding: 15px; border-radius: 6px; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <div id="workday-application-container" data-automation-id="workdayApplication">
+    <h1>Apply for Staff Platform Engineer</h1>
+    <form id="workday-application-form" class="wd-Form" action="/submit" method="POST">
+      <h2>Contact Information</h2>
+      
+      <div class="form-group">
+        <label for="firstName">First Name <span class="required">*</span></label>
+        <input type="text" id="firstName" name="firstName" required data-automation-id="legalNameSection_firstName" value="Alex">
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name <span class="required">*</span></label>
+        <input type="text" id="lastName" name="lastName" required data-automation-id="legalNameSection_lastName" value="Smith">
+      </div>
+
+      <h2>Company Specific Questionnaire</h2>
+      <div class="custom-question-box" data-automation-id="custom-questionnaire-section">
+        <div class="form-group required-field" data-automation-id="formField-customQuestion1">
+          <label for="customSecretPasscode">What is your proprietary team security passcode? <span class="required">*</span></label>
+          <input type="text" id="customSecretPasscode" name="customSecretPasscode" required data-automation-id="unknown-required-question" placeholder="Enter security passcode">
+        </div>
+
+        <div class="form-group required-field" data-automation-id="formField-customQuestion2">
+          <label for="preferredInternalDivision">Which internal division cluster identifier do you prefer? <span class="required">*</span></label>
+          <select id="preferredInternalDivision" name="preferredInternalDivision" required data-automation-id="unknown-required-select">
+            <option value="">Choose an identifier...</option>
+            <option value="div-alpha">Division Alpha-9</option>
+            <option value="div-beta">Division Beta-3</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" id="submit-button" data-automation-id="submit-button">Submit Application</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

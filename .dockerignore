@@ -1,0 +1,25 @@
+# Local database/vault data, logs, and secrets
+data/
+.apply-agent-data/
+logs/
+*.log
+secrets/
+vault/
+*.enc
+.env
+.env.*
+
+# Build and dependencies
+node_modules/
+dist/
+web/node_modules/
+web/.next/
+web/out/
+
+# Artifacts and other generated outputs/tool directories
+artifacts/
+.git
+.github
+*.tgz
+*.zip
+*.tar.gz

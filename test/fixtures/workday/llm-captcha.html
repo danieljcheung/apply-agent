@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workday Job Application - LLM CAPTCHA Fixture</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .captcha-container { border: 2px solid #e1e4e8; padding: 20px; background: #fafbfc; border-radius: 6px; text-align: center; max-width: 450px; margin: 30px 0; }
+    .captcha-title { font-weight: bold; font-size: 1.1em; color: #24292e; margin-bottom: 10px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input[type="text"], input[type="email"], select { width: 100%; max-width: 400px; padding: 8px; }
+    .required { color: red; }
+    #workday-application-form { display: none; }
+  </style>
+</head>
+<body>
+  <div id="workday-application-container" data-automation-id="workdayApplication">
+    <h1>Security Check Required</h1>
+    <p>Please solve the challenge below to proceed with your application.</p>
+    
+    <div class="captcha-container" id="captcha-box" data-automation-id="captcha-container">
+      <div class="captcha-title">Bot Detection Verification</div>
+      <p class="captcha-prompt">Please solve this security check: 7GQ2</p>
+      <div class="form-group">
+        <label for="captchaAnswer">CAPTCHA Answer <span class="required">*</span></label>
+        <input type="text" id="captchaAnswer" name="captchaAnswer" required data-automation-id="captchaAnswer">
+      </div>
+      <button type="button" id="verify-button" data-automation-id="verify-button">Continue</button>
+    </div>
+
+    <form id="workday-application-form" class="wd-Form" action="/submit" method="POST">
+      <h2>Contact Information</h2>
+      
+      <div class="form-group">
+        <label for="firstName">First Name <span class="required">*</span></label>
+        <input type="text" id="firstName" name="firstName" required data-automation-id="legalNameSection_firstName">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input type="email" id="email" name="email" required data-automation-id="email">
+      </div>
+
+      <h2>Resume / CV</h2>
+      <div class="form-group">
+        <label for="resume">Upload Resume <span class="required">*</span></label>
+        <input type="file" id="resume" name="resume" accept=".pdf,.docx" required data-automation-id="file-upload-drop-zone">
+      </div>
+
+      <div class="form-actions" style="margin-top: 30px;">
+        <button type="submit" id="submit-button" data-automation-id="submit-button" class="wd-btn-submit">Submit Application</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('verify-button').addEventListener('click', () => {
+      const answer = document.getElementById('captchaAnswer').value.trim();
+      if (answer === '7GQ2') {
+        document.getElementById('captcha-box').style.display = 'none';
+        document.getElementById('workday-application-form').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

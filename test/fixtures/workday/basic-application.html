@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workday Job Application - Basic Fixture</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input[type="text"], input[type="email"], input[type="tel"], select { width: 100%; max-width: 400px; padding: 8px; }
+    .required { color: red; }
+  </style>
+</head>
+<body>
+  <div id="workday-application-container" data-automation-id="workdayApplication">
+    <h1>Apply for Senior Software Engineer</h1>
+    <p class="company-name">Workday Tech Inc.</p>
+    
+    <form id="workday-application-form" class="wd-Form" action="/submit" method="POST">
+      <h2>Contact Information</h2>
+      
+      <div class="form-group">
+        <label for="firstName">First Name <span class="required">*</span></label>
+        <input type="text" id="firstName" name="firstName" required data-automation-id="legalNameSection_firstName" value="Jane">
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name <span class="required">*</span></label>
+        <input type="text" id="lastName" name="lastName" required data-automation-id="legalNameSection_lastName" value="Doe">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input type="email" id="email" name="email" required data-automation-id="email" value="jane.doe@example.com">
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" data-automation-id="phone" value="555-0199">
+      </div>
+
+      <h2>Resume / CV</h2>
+      <div class="form-group">
+        <label for="resume">Upload Resume <span class="required">*</span></label>
+        <input type="file" id="resume" name="resume" accept=".pdf,.docx" required data-automation-id="file-upload-drop-zone">
+      </div>
+
+      <h2>Work Authorization</h2>
+      <div class="form-group">
+        <label for="workAuth">Are you legally authorized to work in the United States? <span class="required">*</span></label>
+        <select id="workAuth" name="workAuth" required data-automation-id="question-work-auth">
+          <option value="">Select...</option>
+          <option value="yes" selected>Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="sponsorship">Will you now or in the future require sponsorship for employment visa status? <span class="required">*</span></label>
+        <select id="sponsorship" name="sponsorship" required data-automation-id="question-sponsorship">
+          <option value="">Select...</option>
+          <option value="yes">Yes</option>
+          <option value="no" selected>No</option>
+        </select>
+      </div>
+
+      <div class="form-actions" style="margin-top: 30px;">
+        <button type="submit" id="submit-button" data-automation-id="submit-button" class="wd-btn-submit">Submit Application</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

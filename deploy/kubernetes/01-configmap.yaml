@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apply-agent-config
+  namespace: apply-agent
+  labels:
+    app.kubernetes.io/name: apply-agent
+    app.kubernetes.io/component: app
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  LOG_LEVEL: "info"
+  DB_HOST: "apply-agent-postgres-rw.apply-agent.svc.cluster.local"
+  DB_PORT: "5432"
+  DB_NAME: "apply_agent_db"
+  DB_SSLMODE: "require"
+  SAFETY_VERIFICATION_ENABLED: "true"
+  AUTOMATION_RUNTIME: "playwright"
+  APPLY_AGENT_DATA_DIR: "/app/data"
+  APPLY_AGENT_ALLOWED_HOSTS: "apply-agent,apply-agent.apply-agent,apply-agent.apply-agent.svc,apply-agent.apply-agent.svc.cluster.local,apply-agent-api,apply-agent-api.apply-agent,apply-agent-api.apply-agent.svc,apply-agent-api.apply-agent.svc.cluster.local,apply-agent-web,apply-agent-web.apply-agent,apply-agent-web.apply-agent.svc,apply-agent-web.apply-agent.svc.cluster.local,localhost,127.0.0.1"
+  APPLY_AGENT_ALLOWED_ORIGINS: "apply-agent,apply-agent.apply-agent,apply-agent.apply-agent.svc,apply-agent.apply-agent.svc.cluster.local,http://apply-agent:3000,http://apply-agent.apply-agent:3000,http://apply-agent.apply-agent.svc:3000,http://apply-agent.apply-agent.svc.cluster.local:3000,apply-agent-api,apply-agent-api.apply-agent,apply-agent-api.apply-agent.svc,apply-agent-api.apply-agent.svc.cluster.local,http://apply-agent-api:3000,http://apply-agent-api.apply-agent:3000,http://apply-agent-api.apply-agent.svc:3000,http://apply-agent-api.apply-agent.svc.cluster.local:3000,apply-agent-web,apply-agent-web.apply-agent,apply-agent-web.apply-agent.svc,apply-agent-web.apply-agent.svc.cluster.local,http://apply-agent-web,http://apply-agent-web.apply-agent,http://apply-agent-web.apply-agent.svc,http://apply-agent-web.apply-agent.svc.cluster.local,http://localhost:3000,http://localhost:3010,http://localhost:80,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:3010,http://127.0.0.1:80"

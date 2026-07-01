@@ -1,0 +1,13 @@
+From: no-reply@workday.com
+To: candidate@example.com
+Subject: Workday Verification Code
+
+Hello Candidate,
+
+Your Workday verification code is 884712.
+This code will expire in 10 minutes.
+
+If you did not request this, please ignore this email.
+
+Thanks,
+Workday Team

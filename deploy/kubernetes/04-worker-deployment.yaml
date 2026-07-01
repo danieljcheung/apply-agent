@@ -1,0 +1,172 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apply-agent-worker
+  namespace: apply-agent
+  labels:
+    app.kubernetes.io/name: apply-agent
+    app.kubernetes.io/component: worker
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: apply-agent
+      app.kubernetes.io/component: worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: apply-agent
+        app.kubernetes.io/component: worker
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: apply-agent-worker
+          image: ghcr.io/danieljcheung/apply-agent-worker:0.1.0
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - configMapRef:
+                name: apply-agent-config
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: DB_PASSWORD
+            - name: VAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: VAULT_PASSWORD
+            - name: API_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: API_SECRET_KEY
+            - name: PROTON_BRIDGE_HOST
+              value: "127.0.0.1"
+            - name: PROTON_BRIDGE_PORT
+              value: "1143"
+            - name: PROTON_BRIDGE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: PROTON_BRIDGE_USERNAME
+            - name: PROTON_BRIDGE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: apply-agent-secret
+                  key: PROTON_BRIDGE_PASSWORD
+            - name: APPLY_AGENT_DATA_DIR
+              value: "/app/data"
+            - name: DB_SSL_CA_PATH
+              value: "/etc/db-ca/ca.crt"
+          volumeMounts:
+            - name: data-volume
+              mountPath: /app/data
+            - name: dshm
+              mountPath: /dev/shm
+            - name: db-ca
+              mountPath: /etc/db-ca
+              readOnly: true
+            - name: tmp-dir
+              mountPath: /tmp
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          livenessProbe:
+            exec:
+              command:
+                - pgrep
+                - -f
+                - dist/src/worker.js
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - pgrep
+                - -f
+                - dist/src/worker.js
+            initialDelaySeconds: 5
+            periodSeconds: 5
+        - name: proton-bridge
+          image: ghcr.io/videocurio/proton-mail-bridge@sha256:d44f6b12650c6b0f9e0aefee192d65c6e46d0a22bd5ec189e8624812fd139c8b
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - containerPort: 1143
+              name: imap
+          env:
+            - name: NONINTERACTIVE
+              value: "1"
+            - name: HOME
+              value: "/home/protonbridge"
+          volumeMounts:
+            - name: proton-home
+              mountPath: /home/protonbridge
+            - name: proton-bridge-data
+              mountPath: /home/protonbridge/.config/protonmail/bridge
+            - name: tmp-dir
+              mountPath: /tmp
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            tcpSocket:
+              port: imap
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: imap
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: apply-agent-data
+        - name: dshm
+          emptyDir:
+            medium: Memory
+        - name: proton-bridge-data
+          persistentVolumeClaim:
+            claimName: proton-bridge-data
+        - name: db-ca
+          secret:
+            secretName: apply-agent-postgres-ca
+        - name: tmp-dir
+          emptyDir: {}
+        - name: proton-home
+          emptyDir: {}

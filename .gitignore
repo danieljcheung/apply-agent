@@ -1,0 +1,19 @@
+# Runtime, build, and local state artifacts
+data/
+dist/
+out/
+.apply-agent-data/
+node_modules/
+web/node_modules/
+web/.next/
+web/out/
+logs/
+*.log
+artifacts/
+secrets/
+vault/
+vault.enc
+ledger.json
+*.enc
+.env
+.env.*
