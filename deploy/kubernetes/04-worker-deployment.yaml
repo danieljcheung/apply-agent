@@ -27,6 +27,8 @@ spec:
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: apply-agent-worker
           image: ghcr.io/danieljcheung/apply-agent-worker@sha256:0a9f8834f9e9080dab38ff3138e8b064572be1fd120da943ff7b3a864cbb5c59

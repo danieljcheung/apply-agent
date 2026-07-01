@@ -25,6 +25,8 @@ spec:
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: apply-agent-web
           image: ghcr.io/danieljcheung/apply-agent-web@sha256:99b90cf0dcd2d67915407408e26bc383097863577feb7264ae52dc5ee66ed001

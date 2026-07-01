@@ -36,6 +36,7 @@ test('K8s Manifests Verification', async (t) => {
     assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);
+    assert.match(content, /seccompProfile:\s*type:\s*RuntimeDefault/);
     assert.match(content, /allowPrivilegeEscalation:\s*false/);
     assert.match(content, /readOnlyRootFilesystem:\s*true/);
     assert.match(content, /runAsNonRoot:\s*true/);
@@ -61,6 +62,7 @@ test('K8s Manifests Verification', async (t) => {
     assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);
+    assert.match(content, /seccompProfile:\s*type:\s*RuntimeDefault/);
     assert.match(content, /allowPrivilegeEscalation:\s*false/);
     assert.match(content, /readOnlyRootFilesystem:\s*true/);
     assert.match(content, /runAsNonRoot:\s*true/);
@@ -92,6 +94,7 @@ test('K8s Manifests Verification', async (t) => {
     assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);
+    assert.match(content, /seccompProfile:\s*type:\s*RuntimeDefault/);
     assert.match(content, /allowPrivilegeEscalation:\s*false/);
     assert.match(content, /readOnlyRootFilesystem:\s*true/);
     assert.match(content, /runAsNonRoot:\s*true/);

@@ -31,6 +31,8 @@ spec:
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: apply-agent-api
           image: ghcr.io/danieljcheung/apply-agent-api@sha256:034c3f6b73b37631d157c14505bed98716d4d959e077e0e2e4228c8e063a28aa
