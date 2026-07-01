@@ -9,12 +9,8 @@ export function resolveProtonBridgeConfig(config: ProtonBridgeConfigInput | null
   const port = typeof rawPort === 'string' ? parseInt(rawPort, 10) || rawPort : rawPort;
   const username = config?.username || process.env.PROTON_BRIDGE_USERNAME;
   const password = config?.password || process.env.PROTON_BRIDGE_PASSWORD || process.env.PROTON_BRIDGE_TOKEN;
-  let simulateSuccess = config?.simulateSuccess ?? (process.env.PROTON_BRIDGE_SIMULATE === 'true');
-
-  const isProd = process.env.NODE_ENV === 'production';
-  if (isProd) {
-    simulateSuccess = false;
-  }
+  const allowSimulation = process.env.TEST_MODE === 'true' && process.env.NODE_ENV !== 'production';
+  const simulateSuccess = allowSimulation && (config?.simulateSuccess === true || process.env.PROTON_BRIDGE_SIMULATE === 'true');
 
   const isLoopback = host === 'localhost' || host === '127.0.0.1' || host === '::1' || host === '[::1]';
   const configSecure = config?.secure ?? (process.env.PROTON_BRIDGE_SECURE !== undefined ? process.env.PROTON_BRIDGE_SECURE === 'true' : undefined);
