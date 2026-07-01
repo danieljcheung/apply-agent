@@ -29,7 +29,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: apply-agent-web
-          image: ghcr.io/danieljcheung/apply-agent-web@sha256:99b90cf0dcd2d67915407408e26bc383097863577feb7264ae52dc5ee66ed001
+          image: ghcr.io/danieljcheung/apply-agent-web@sha256:3595380e40ab78e4a0be2036938d291891c898a80a5b33e3118e633b9cba9e3b
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

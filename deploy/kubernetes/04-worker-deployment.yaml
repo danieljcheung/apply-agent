@@ -31,7 +31,7 @@ spec:
           type: RuntimeDefault
       initContainers:
         - name: prepare-proton-bridge-data
-          image: ghcr.io/danieljcheung/apply-agent-worker@sha256:0a9f8834f9e9080dab38ff3138e8b064572be1fd120da943ff7b3a864cbb5c59
+          image: ghcr.io/danieljcheung/apply-agent-worker@sha256:c0998ef13a03394b04a53cc4bd30fffb59b7a8cb86f6d87d4c6d4e2ebb82d8e9
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -49,7 +49,7 @@ spec:
               mountPath: /work
       containers:
         - name: apply-agent-worker
-          image: ghcr.io/danieljcheung/apply-agent-worker@sha256:0a9f8834f9e9080dab38ff3138e8b064572be1fd120da943ff7b3a864cbb5c59
+          image: ghcr.io/danieljcheung/apply-agent-worker@sha256:c0998ef13a03394b04a53cc4bd30fffb59b7a8cb86f6d87d4c6d4e2ebb82d8e9
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

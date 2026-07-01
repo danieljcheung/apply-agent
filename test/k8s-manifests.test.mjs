@@ -32,7 +32,7 @@ test('K8s Manifests Verification', async (t) => {
     
     assert.match(content, /name:\s*apply-agent-api/);
     assert.match(content, /component:\s*api/);
-    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-api@sha256:034c3f6b73b37631d157c14505bed98716d4d959e077e0e2e4228c8e063a28aa/);
+    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-api@sha256:3af4de33d127c0ee39a7962e94a88b1cc95cee467cea74d848d5677f042728dd/);
     assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);
@@ -58,7 +58,7 @@ test('K8s Manifests Verification', async (t) => {
     
     assert.match(content, /name:\s*apply-agent-worker/);
     assert.match(content, /component:\s*worker/);
-    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-worker@sha256:0a9f8834f9e9080dab38ff3138e8b064572be1fd120da943ff7b3a864cbb5c59/);
+    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-worker@sha256:c0998ef13a03394b04a53cc4bd30fffb59b7a8cb86f6d87d4c6d4e2ebb82d8e9/);
     assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /command:\s*-\s*node\s*-\s*-e\s*-\s*"?process\.exit\(0\)"?/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
@@ -98,7 +98,7 @@ test('K8s Manifests Verification', async (t) => {
     
     assert.match(content, /name:\s*apply-agent-web/);
     assert.match(content, /component:\s*web/);
-    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-web@sha256:99b90cf0dcd2d67915407408e26bc383097863577feb7264ae52dc5ee66ed001/);
+    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-web@sha256:3595380e40ab78e4a0be2036938d291891c898a80a5b33e3118e633b9cba9e3b/);
     assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);

@@ -35,7 +35,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: apply-agent-api
-          image: ghcr.io/danieljcheung/apply-agent-api@sha256:034c3f6b73b37631d157c14505bed98716d4d959e077e0e2e4228c8e063a28aa
+          image: ghcr.io/danieljcheung/apply-agent-api@sha256:3af4de33d127c0ee39a7962e94a88b1cc95cee467cea74d848d5677f042728dd
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
