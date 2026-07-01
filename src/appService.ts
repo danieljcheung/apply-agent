@@ -2,6 +2,7 @@ import os from 'os';
 import crypto from 'crypto';
 import path from 'path';
 import fs from 'fs/promises';
+import { unlinkSync } from 'fs';
 import { Vault } from './storage.js';
 import { ProfileBuilder, buildClaimBank } from './profile.js';
 import { extractPdfResumeText } from './resumePdf.js';
@@ -952,7 +953,7 @@ export class AppService {
       activeResumeId: null
     };
     for (const filePath of activeDecryptedFiles) {
-      fs.unlink(filePath).catch(() => {});
+      try { unlinkSync(filePath); } catch {}
     }
     activeDecryptedFiles.clear();
   }
