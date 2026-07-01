@@ -117,7 +117,7 @@ To prevent unintended automation execution against unverified external portals, 
 ### 3. Proton Mail Bridge & Email Verification Boundary
 * **Local Desktop Environment**: Proton Mail Bridge operates on host `127.0.0.1`, allowing local email verification checks.
 * **Kubernetes Cluster Deployment**: Proton Mail Bridge is deployed as a sidecar container (`proton-bridge`) in the same single pod as `apply-agent`. Because containers in a Kubernetes pod share a network namespace, IMAP is exposed on `127.0.0.1:1143` (localhost inside the pod) and is not exposed outside the pod.
-* **Credential & Storage Safety**: Connection credentials (`PROTON_BRIDGE_USERNAME` and `PROTON_BRIDGE_PASSWORD`) are passed via Kubernetes secrets or vault-preferred equivalents. Raw credentials are never exposed in API responses, renderer state, artifacts, or logs. Bridge state is persisted across pod restarts using a dedicated PersistentVolumeClaim (`proton-bridge-data`). Offline testing and local mock runs are supported via `simulateSuccess` configuration.
+* **Credential & Storage Safety**: Connection credentials (`PROTON_BRIDGE_USERNAME` and `PROTON_BRIDGE_PASSWORD`) are passed via Kubernetes secrets or vault-preferred equivalents. Raw credentials are never exposed in API responses, renderer state, artifacts, or logs. Bridge state is persisted across pod restarts using a dedicated PersistentVolumeClaim (`proton-bridge-data`). Offline mock success via `simulateSuccess` is test-only and is disabled outside explicit `TEST_MODE=true`, and always disabled in production.
 ---
 
 ## Canonical Blocker Codes

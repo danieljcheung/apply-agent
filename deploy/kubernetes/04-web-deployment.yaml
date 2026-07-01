@@ -27,8 +27,8 @@ spec:
         fsGroup: 1001
       containers:
         - name: apply-agent-web
-          image: ghcr.io/danieljcheung/apply-agent-web:0.1.0
-          imagePullPolicy: Always
+          image: ghcr.io/danieljcheung/apply-agent-web@sha256:99b90cf0dcd2d67915407408e26bc383097863577feb7264ae52dc5ee66ed001
+          imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

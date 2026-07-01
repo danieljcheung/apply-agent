@@ -32,8 +32,8 @@ test('K8s Manifests Verification', async (t) => {
     
     assert.match(content, /name:\s*apply-agent-api/);
     assert.match(content, /component:\s*api/);
-    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-api:0.1.0/);
-    assert.match(content, /imagePullPolicy:\s*Always/);
+    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-api@sha256:034c3f6b73b37631d157c14505bed98716d4d959e077e0e2e4228c8e063a28aa/);
+    assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);
     assert.match(content, /allowPrivilegeEscalation:\s*false/);
@@ -57,8 +57,8 @@ test('K8s Manifests Verification', async (t) => {
     
     assert.match(content, /name:\s*apply-agent-worker/);
     assert.match(content, /component:\s*worker/);
-    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-worker:0.1.0/);
-    assert.match(content, /imagePullPolicy:\s*Always/);
+    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-worker@sha256:0a9f8834f9e9080dab38ff3138e8b064572be1fd120da943ff7b3a864cbb5c59/);
+    assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);
     assert.match(content, /allowPrivilegeEscalation:\s*false/);
@@ -88,8 +88,8 @@ test('K8s Manifests Verification', async (t) => {
     
     assert.match(content, /name:\s*apply-agent-web/);
     assert.match(content, /component:\s*web/);
-    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-web:0.1.0/);
-    assert.match(content, /imagePullPolicy:\s*Always/);
+    assert.match(content, /image:\s*ghcr\.io\/danieljcheung\/apply-agent-web@sha256:99b90cf0dcd2d67915407408e26bc383097863577feb7264ae52dc5ee66ed001/);
+    assert.match(content, /imagePullPolicy:\s*IfNotPresent/);
     assert.match(content, /automountServiceAccountToken:\s*false/);
     assert.match(content, /imagePullSecrets:\s*- name:\s*ghcr-pull-secret/);
     assert.match(content, /allowPrivilegeEscalation:\s*false/);

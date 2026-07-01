@@ -261,15 +261,14 @@ Verify cluster health and status:
 kubectl get cluster -n apply-agent
 ```
 
-#### 3. Build & Push Application Images
-Build the versioned container images using the multi-stage `Dockerfile`:
-```bash
-IMAGE_REGISTRY=ghcr.io/danieljcheung TAG=0.1.0 npm run container
-docker push ghcr.io/danieljcheung/apply-agent-api:0.1.0
-docker push ghcr.io/danieljcheung/apply-agent-worker:0.1.0
-docker push ghcr.io/danieljcheung/apply-agent-web:0.1.0
+#### 3. Build & Publish Application Images
+Application images are published by GitHub Actions from `.github/workflows/container-images.yml` on pushes to `main` or manual workflow dispatch. The workflow builds the `web`, `api`, and `worker` Dockerfile targets and pushes:
+```text
+ghcr.io/danieljcheung/apply-agent-web:0.1.0
+ghcr.io/danieljcheung/apply-agent-api:0.1.0
+ghcr.io/danieljcheung/apply-agent-worker:0.1.0
 ```
-The Kubernetes manifests reference the same versioned image names for API, worker, and web. Publish the Proton Bridge sidecar image referenced by `04-worker-deployment.yaml`, or replace it with an internally reviewed Proton Bridge image before applying the worker deployment.
+For local rebuilds, use `npm run container` after setting `IMAGE_REGISTRY` and `TAG` if needed. Kubernetes deployments pin the published image digests and reference `imagePullSecrets: ghcr-pull-secret`; provision that registry secret in the `apply-agent` namespace before rollout if the GHCR packages are private. The Proton Bridge sidecar uses the pinned public image digest in `04-worker-deployment.yaml`.
 
 #### 3.5. Dry-Run Manifest Validation
 Before applying to a live cluster, run client-side validation on the Kustomize manifests:

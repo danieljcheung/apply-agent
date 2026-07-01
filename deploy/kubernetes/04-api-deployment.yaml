@@ -33,8 +33,8 @@ spec:
         fsGroup: 1001
       containers:
         - name: apply-agent-api
-          image: ghcr.io/danieljcheung/apply-agent-api:0.1.0
-          imagePullPolicy: Always
+          image: ghcr.io/danieljcheung/apply-agent-api@sha256:034c3f6b73b37631d157c14505bed98716d4d959e077e0e2e4228c8e063a28aa
+          imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
